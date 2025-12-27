@@ -4,11 +4,11 @@ import type { TaskConfig } from "../../models/TaskConfig";
 import { TaskConfigContext } from "./context";
 
 export const initialTaskConfig: TaskConfig = {
-	totalCycles: 3,
+	totalCycles: 8,
 	times: {
-		workTime: 1,
-		shortBreakTime: 1,
-		longBreakTime: 1,
+		workTime: 25,
+		shortBreakTime: 10,
+		longBreakTime: 25,
 	},
 };
 
