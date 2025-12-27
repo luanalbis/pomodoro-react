@@ -4,7 +4,7 @@ import { ButtonBase } from "../ButtonBase";
 import { InputBase } from "../InputBase";
 
 import styles from "./styles.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTaskConfigContext } from "../../contexts/TaskConfigContext/context";
 import { ShowMessageAdapter } from "../../adapters/ShowMessageAdapter";
 import { TaskConfigActionTypes } from "../../contexts/TaskConfigContext/actions";
