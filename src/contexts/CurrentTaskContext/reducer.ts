@@ -28,6 +28,9 @@ export function currentTaskReducer(
 		case CurrentTaskActionTypes.RESET_CURRENT_TASK:
 			return null;
 
+		case CurrentTaskActionTypes.RESET_CURRENT_TASK:
+			return null;
+
 		default:
 			return state;
 	}

@@ -8,9 +8,9 @@ type Props = {
 
 export function InputBase({ id, labelText, ...props }: Props) {
 	return (
-		<>
+		<div className={styles.inputContainer}>
 			<label htmlFor={id}>{labelText}</label>
 			<input className={styles.input} id={id} {...props} />
-		</>
+		</div>
 	);
 }

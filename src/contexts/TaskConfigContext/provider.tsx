@@ -4,6 +4,7 @@ import type { TaskConfig } from "../../models/TaskConfig";
 import { TaskConfigContext } from "./context";
 
 export const initialTaskConfig: TaskConfig = {
+	mode: "normal",
 	totalCycles: 8,
 	times: {
 		workTime: 25,
@@ -25,6 +26,7 @@ export function TaskConfigContextProvider({ children }: TaskConfigContextProvide
 	});
 
 	useEffect(() => {
+		if (taskConfig.mode === "teste") return;
 		localStorage.setItem("taskConfig", JSON.stringify(taskConfig));
 	}, [taskConfig]);
 

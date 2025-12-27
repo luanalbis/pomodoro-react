@@ -13,6 +13,12 @@ export function historyReducer(state: TaskModel[], action: TaskHistoryAction): T
 		);
 	}
 
+	if (action.type === "REMOVE_TASK_IN_HISTORY") {
+		if (action.type === "REMOVE_TASK_IN_HISTORY") {
+			return state.filter((task) => task.id !== action.payload.taskId);
+		}
+	}
+
 	if (action.type === "CLEAN_HISTORY") {
 		return [];
 	}

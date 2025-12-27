@@ -16,7 +16,6 @@ export class ShowMessageAdapter {
 	}
 
 	public info(message: string) {
-		toast.dismiss();
 		return toast.info(message);
 	}
 

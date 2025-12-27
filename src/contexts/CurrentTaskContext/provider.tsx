@@ -5,6 +5,7 @@ import { currentTaskReducer } from "./reducer";
 import { TimerWorkerManager } from "../../workers/timerWorker/manager";
 import { formatSecondsToMinuts } from "../../utils/formatSecondsToMinuts";
 import { ShowMessageAdapter } from "../../adapters/ShowMessageAdapter";
+import { useTaskConfigContext } from "../TaskConfigContext/context";
 
 export const taskTypeLabels: Record<CycleModel["type"], string> = {
 	workTime: "Foco",
@@ -15,6 +16,9 @@ export const taskTypeLabels: Record<CycleModel["type"], string> = {
 type CurrentTaskContextProviderProps = { children: React.ReactNode };
 
 export function CurrentTaskAppContextProvider({ children }: CurrentTaskContextProviderProps) {
+	const { taskConfig } = useTaskConfigContext();
+	const tickInterval = taskConfig.mode === "normal" ? 1000 : 100;
+
 	const [currentTask, dispatchCurrentTask] = useReducer(currentTaskReducer, null);
 	const worker = TimerWorkerManager.getInstance();
 	const showMessage: ShowMessageAdapter = ShowMessageAdapter.getInstance();
@@ -52,13 +56,21 @@ export function CurrentTaskAppContextProvider({ children }: CurrentTaskContextPr
 			return;
 		}
 
-		worker.postMessage(currentTask.secondsRemaining);
+		worker.postMessage({
+			secondsRemaining: currentTask.secondsRemaining,
+			tickInterval: tickInterval,
+		});
 	}, [currentTask?.status]);
 
 	useEffect(() => {
 		if (!currentTask || !currentTask.activeCycle) return;
 
-		worker.postMessage(currentTask.secondsRemaining);
+		worker.postMessage({
+			secondsRemaining: currentTask.secondsRemaining,
+			tickInterval: tickInterval,
+		});
+
+		showMessage.info("Iniciando ciclo de " + taskTypeLabels[currentTask.activeCycle.type]);
 	}, [currentTask?.currentCycleIndex]);
 
 	useEffect(() => {

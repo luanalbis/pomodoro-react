@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
+import { PlayCircleIcon, StopCircleIcon, TrashIcon } from "lucide-react";
 
 import { ButtonBase } from "../ButtonBase";
 import { Cycles } from "../Cycles";
@@ -89,7 +89,7 @@ export function MainForm() {
 		if (!currentTask) return;
 
 		dispatchCurrentTask({ type: "PAUSE_CURRENT_TASK" });
-		showMessage.warning("Tarefa pausade, clique no botão para retornar");
+		showMessage.warning("Tarefa pausada.");
 	}
 
 	function handleRestartTask(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -101,24 +101,41 @@ export function MainForm() {
 		showMessage.success("Tarefa retornada");
 	}
 
+	function handleDeleteTask(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		if (!currentTask || currentTask.status !== "Interrompida") return;
+
+		e.preventDefault();
+
+		showMessage.dismiss();
+		showMessage.confirm("Deseja remover a tarefa?", (confirmation: boolean) => {
+			if (confirmation) {
+				dispatchHistory({ type: "REMOVE_TASK_IN_HISTORY", payload: { taskId: currentTask?.id } });
+				dispatchCurrentTask({ type: "RESET_CURRENT_TASK" });
+			}
+		});
+	}
+
 	const hasActiveTask = !!currentTask;
 
 	const isTaskPaused = hasActiveTask && currentTask.status == "Interrompida";
 
 	return (
 		<form onSubmit={handleCreateTask} className={styles.form}>
-			<div className={styles.formRow}>
-				<InputBase
-					id="taskNameId"
-					maxLength={30}
-					type="text"
-					labelText="task"
-					placeholder="Digite algo..."
-					onChange={(e) => setTaskName(e.target.value)}
-					disabled={hasActiveTask}
-					defaultValue={taskName}
-				/>
-			</div>
+			{!hasActiveTask && (
+				<div className={styles.formRow}>
+					<InputBase
+						id="taskNameId"
+						maxLength={30}
+						type="text"
+						labelText="Nome da tarefa:"
+						placeholder="Digite o nome da tarefa..."
+						onChange={(e) => setTaskName(e.target.value)}
+						defaultValue={taskName}
+					/>
+				</div>
+			)}
+
+			{hasActiveTask && <h2 style={{ fontWeight: "bolder" }}>{currentTask.name.toUpperCase()}</h2>}
 
 			<div className={styles.formRow}>
 				<Cycles />
@@ -147,6 +164,17 @@ export function MainForm() {
 						icon={!isTaskPaused ? <StopCircleIcon /> : <PlayCircleIcon />}
 						type={!isTaskPaused ? "button" : "submit"}
 						onClick={!isTaskPaused ? handlePauseTask : handleRestartTask}
+					/>
+				)}
+
+				{hasActiveTask && isTaskPaused && (
+					<ButtonBase
+						aria-label="Excluir tarefa atual"
+						title="Excluir tarefa atual"
+						color="red"
+						icon={<TrashIcon />}
+						type="button"
+						onClick={handleDeleteTask}
 					/>
 				)}
 			</div>

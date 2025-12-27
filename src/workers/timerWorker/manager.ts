@@ -17,7 +17,7 @@ export class TimerWorkerManager {
 		return this.worker;
 	}
 
-	public postMessage<T>(message: T) {
+	public postMessage(message: { secondsRemaining: number; tickInterval: number }) {
 		this.worker.postMessage(message);
 	}
 

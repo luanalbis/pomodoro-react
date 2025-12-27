@@ -9,9 +9,12 @@ import { ShowMessageAdapter } from "../../adapters/ShowMessageAdapter";
 import { useTaskHistoryContext } from "../../contexts/TaskHistoryContext/context";
 import { formatDateTime } from "../../utils/formatDateTime";
 import { formatTaskDuration } from "../../utils/formatTaskDuration";
+import { useCurrentTaskContext } from "../../contexts/CurrentTaskContext/context";
+import type { TaskModel } from "../../models/TaskModel";
 
 export function HistoryPage() {
 	const { history, dispatchHistory } = useTaskHistoryContext();
+	const { currentTask, dispatchCurrentTask } = useCurrentTaskContext();
 	const showMessage = ShowMessageAdapter.getInstance();
 
 	function handleCleanHistory(e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void {
@@ -22,12 +25,24 @@ export function HistoryPage() {
 			return;
 		}
 
-		showMessage.confirm("Confirmar exclusão", (confirmed) => {
-			if (confirmed) dispatchHistory({ type: "CLEAN_HISTORY" });
+		showMessage.confirm("Deseja excluir todo o histórico?", (confirmed) => {
+			if (!confirmed) return;
+
+			dispatchHistory({ type: "CLEAN_HISTORY" });
+			if (currentTask) dispatchCurrentTask({ type: "RESET_CURRENT_TASK" });
 		});
 	}
 
 	const hasTask = history.length > 0 || false;
+
+	function handleExcludeTask(task: TaskModel) {
+		showMessage.confirm("Deseja excluir a Tarefa do histórico?", (confirmed) => {
+			if (!confirmed) return;
+
+			dispatchHistory({ type: "REMOVE_TASK_IN_HISTORY", payload: { taskId: task.id } });
+			if (task.id === currentTask?.id) dispatchCurrentTask({ type: "RESET_CURRENT_TASK" });
+		});
+	}
 
 	return (
 		<MainTemplate>
@@ -59,6 +74,7 @@ export function HistoryPage() {
 									<th>Duração </th>
 									<th>Inicio</th>
 									<th>Fim</th>
+									<th>Excluir</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -73,6 +89,16 @@ export function HistoryPage() {
 
 										<td>{formatDateTime(task.createdAt)}</td>
 										<td>{task.finishedAt ? formatDateTime(task.finishedAt) : ""}</td>
+										<td>
+											<ButtonBase
+												color="red"
+												icon={<TrashIcon />}
+												onClick={() => {
+													handleExcludeTask(task);
+												}}
+												type="button"
+												style={{ width: "38px", height: "38px", minWidth: "38px" }}></ButtonBase>
+										</td>
 									</tr>
 								))}
 							</tbody>

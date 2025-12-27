@@ -1,11 +1,11 @@
 let isRunning = false;
 
-self.onmessage = (event: MessageEvent<number>) => {
+self.onmessage = (event: MessageEvent<{ secondsRemaining: number; tickInterval: number }>) => {
 	if (isRunning) return;
 
 	isRunning = true;
 
-	const secondsRemaining = event.data;
+	const { secondsRemaining, tickInterval } = event.data;
 
 	let countDownSeconds = secondsRemaining;
 
@@ -16,7 +16,7 @@ self.onmessage = (event: MessageEvent<number>) => {
 			isRunning = false;
 			return;
 		}
-		setTimeout(tick, 1000);
+		setTimeout(tick, tickInterval);
 	}
 
 	tick();

@@ -8,6 +8,7 @@ export const CurrentTaskActionTypes = {
 	COUNT_DOWN: "COUNT_DOWN",
 	CHANGE_CURRENT_TASK_CYCLE: "CHANGE_CURRENT_TASK_CYCLE",
 	COMPLETE_CURRENT_TASK: "COMPLETE_CURRENT_TASK",
+	EXCLUDE_CURRENT_TASK: "EXCLUDE_CURRENT_TASK",
 } as const;
 
 export type CurrentTaskAction =
@@ -15,6 +16,7 @@ export type CurrentTaskAction =
 	| { type: typeof CurrentTaskActionTypes.COUNT_DOWN; payload: { secondsRemaining: number } }
 	| { type: typeof CurrentTaskActionTypes.PAUSE_CURRENT_TASK }
 	| { type: typeof CurrentTaskActionTypes.RESTART_CURRENT_TASK }
+	| { type: typeof CurrentTaskActionTypes.EXCLUDE_CURRENT_TASK }
 	| { type: typeof CurrentTaskActionTypes.COMPLETE_CURRENT_TASK }
 	| { type: typeof CurrentTaskActionTypes.CHANGE_CURRENT_TASK_CYCLE }
 	| { type: typeof CurrentTaskActionTypes.RESET_CURRENT_TASK };
