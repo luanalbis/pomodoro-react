@@ -2,6 +2,9 @@
 
 Pomodoro React é um aplicativo de produtividade baseado na técnica Pomodoro.
 
+## Confira na Vercel
+- Confifa e teste você mesmo na vercel: https://pomodoro-react-kappa.vercel.app/
+
 ## Funcionalidades
 
 - Configuração de ciclos de trabalho e descanso.
@@ -9,6 +12,8 @@ Pomodoro React é um aplicativo de produtividade baseado na técnica Pomodoro.
 - Suporte a múltiplos temas.
 - Histórico de tarefas: completadas, pausadas ou abandonadas.
 - Totalmente client-side.
+- Modo teste, onde os ciclos são de apenas 1 minuto com velocidade aumentada em 10x para você testar!
+
 
 ## Estrutura de páginas
 
