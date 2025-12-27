@@ -26,7 +26,7 @@ export function TaskConfigContextProvider({ children }: TaskConfigContextProvide
 	});
 
 	useEffect(() => {
-		localStorage.setItem("taskCOnfig", JSON.stringify(taskConfig));
+		localStorage.setItem("taskConfig", JSON.stringify(taskConfig));
 	}, []);
 
 	useEffect(() => {
